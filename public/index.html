@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>OCR Image Upload</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    body {
+      text-align: center;
+      margin: 3.1rem;
+      font-family: 'poppins', sans-serif;
+    }
+
+    h1 {
+      color: #333;
+    }
+
+    #imageContainer {
+      margin-top: 1.4rem;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+    }
+
+    #output {
+      margin-top: 1.4rem;
+    }
+
+    #imageInput {
+      font-size: 1rem;
+      margin: 10px;
+      padding: 10px;
+      cursor: pointer;
+      border: none;
+      background-color: #4CAF50;
+      color: white;
+      border-radius: 5px;
+    }
+
+    button:hover {
+      background-color: #45a049;
+    }
+
+    input[type="file"] {
+      display: none;
+    }
+
+    label[for="imageInput"] {
+      display: inline-block;
+      background-color: #4CAF50;
+      color: white;
+      padding: 10px;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    label[for="imageInput"]:hover {
+      background-color: #45a049;
+    }
+
+
+    label[for="captureButton"] {
+      display: inline-block;
+      background-color: #138ac2;
+      color: white;
+      padding: 10px;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    label[for="captureButton"]:hover {
+      background-color: #076692;
+    }
+
+
+    input[type="submit"] {
+      font-size: 1.5rem;
+      background-color: deepskyblue;
+      color: white;
+      border-color: deepskyblue;
+
+      font-family: 'poppins', sans-serif;
+      border-radius: 5px;
+      transition: background-color 0.3s ease;
+    }
+
+    input[type="submit"]:hover {
+      background-color: rgb(32, 163, 215);
+    }
+  </style>
+</head>
+
+<body>
+  <h1>Photo to chat-gpt summery</h1>
+
+  <!-- File Input for Image Upload -->
+  <form action="/upload" method="post" enctype="multipart/form-data">
+
+
+    <label for="imageInput">Choose a Image</label>
+    <input type="file" id="imageInput" accept="image/*" name="photoImg">
+
+    <!-- Button to Capture Photo from Camera -->
+    <label for="captureButton">Capture a Photo</label>
+    <input id="captureButton" type="file" accept="image/*" name="photoImg" capture></input>
+    
+  
+
+
+    <!-- Display Output Text -->
+    <div id="imageContainer">
+      <div id="output"></div>
+    </div>
+
+    <br>
+    <br>
+
+    <input type="submit" value="Upload">
+
+  </form>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const imageInput = document.getElementById('imageInput');
+      const captureButton = document.getElementById('captureButton');
+      const outputDiv = document.getElementById('output');
+
+      // Event listener for file input change
+      imageInput.addEventListener('change', handleFileSelect);
+
+
+
+      // Function to handle file input change
+      function handleFileSelect(event) {
+        const file = event.target.files[0];
+        if (file) {
+          displayImage(file);
+        }
+      }
+
+      // Function to display the selected image
+      function displayImage(file) {
+        document.getElementById('captureButton').value = '';
+        const reader = new FileReader();
+        reader.onload = function (e) {
+          const img = new Image();
+          img.src = e.target.result;
+          img.style.maxWidth = '100%';
+          outputDiv.innerHTML = '';
+          outputDiv.appendChild(img);
+        };
+        reader.readAsDataURL(file);
+      }
+
+      captureButton.addEventListener('change', (event) => {
+
+        if (captureButton.files && captureButton.files[0]) {
+          document.getElementById('imageInput').value = '';
+          const img = new Image();
+          img.src = window.URL.createObjectURL(captureButton.files[0]);
+          img.style.maxWidth = '100%';
+          outputDiv.innerHTML = '';
+          outputDiv.appendChild(img);
+        } else {
+          console.log('No file selected');
+        }
+      });
+    });
+  </script>
+</body>
+
+</html>
