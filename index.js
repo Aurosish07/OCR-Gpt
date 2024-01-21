@@ -16,7 +16,7 @@ app.set('view engine', 'ejs');
 app.use(express.static("public"));
 app.use(express.urlencoded({ extended: true }));
 
-let name;
+
 const asyncMutex = new Mutex(); // Create a mutex to synchronize access to shared resources
 
 const storage = multer.diskStorage({
@@ -27,7 +27,6 @@ const storage = multer.diskStorage({
         const extension = path.extname(file.originalname);
         const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
         const Name = file.fieldname + '-' + uniqueSuffix + extension;
-        name = Name;
         cb(null, Name);
     }
 });
@@ -42,7 +41,7 @@ app.post("/upload", upload.single('photoImg'), async (req, res) => {
     console.log(req.file);
 
     if (req.file) {
-        const imagePath = path.join(__dirname, "uploads", name);
+        const imagePath = path.join(__dirname, "uploads", req.file.filename);
 
         const release = await asyncMutex.acquire(); // Acquire the mutex
 
