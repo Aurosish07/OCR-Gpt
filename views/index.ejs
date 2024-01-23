@@ -15,11 +15,11 @@
             font-family: 'poppins', sans-serif;
         }
 
-        @media (min-width: 640px){
+        @media (min-width: 640px) {
             .bg-white {
-            margin-top: -16rem;
-            font-family: 'poppins', sans-serif;
-        }
+                margin-top: -16rem;
+                font-family: 'poppins', sans-serif;
+            }
         }
     </style>
 </head>
@@ -58,8 +58,9 @@
 
                         </div>
 
-                        <p class="mt-6 text-lg leading-8 text-gray-600" style="font-size: 1.4rem;margin-top: -0px;">
-                         <%= locals.text %>
+                        <p class="mt-6 text-lg leading-8 text-gray-600" style="font-size: 1.4rem;margin-top: -0px;"
+                            id="word">
+                            <%= locals.text %>
                         </p>
                     </div>
 
@@ -84,12 +85,29 @@
 
     <script>
         let c = 0;
-        document.querySelector("#ImgIcon").addEventListener("click", () => {
+        let text = `<%= locals.text %>`;
+
+
+
+        document.querySelector("#ImgIcon").addEventListener("click", async () => {
             if (c == 0) {
                 document.querySelector("#ImgIcon").setAttribute("src", "https://img.icons8.com/ios-glyphs/30/FFFFFF/pause--v1.png");
+                const speech = await new SpeechSynthesisUtterance(text);
+                speech.lang = "en-US";
+                window.speechSynthesis.speak(speech);
+                speech.onboundary = (event) => {
+                    const charIndex = event.charIndex;
+                    const charLength = event.charLength;
+                    const spokenWord = text.substring(charIndex, charIndex + charLength);
+                    const pTagContent = document.querySelector("p").textContent;
+                    const highlightedText = pTagContent.replace(spokenWord, `<span style="background-color: #4F46E5;color:white">${spokenWord}</span>`);
+                    document.querySelector("p").innerHTML = highlightedText;
+                };
                 c++;
+
             } else {
                 document.querySelector("#ImgIcon").setAttribute("src", "https://img.icons8.com/ios-glyphs/30/FFFFFF/play--v1.png");
+                window.speechSynthesis.cancel();
                 c = 0;
             }
         })
