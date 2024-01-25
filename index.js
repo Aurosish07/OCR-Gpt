@@ -1,11 +1,15 @@
 import express from "express";
-import { createWorker } from 'tesseract.js';
 import { dirname } from "path";
 import { fileURLToPath } from "url";
 import multer from "multer";
 import path from 'path';
 import ejs from "ejs";
 import { Mutex } from 'async-mutex';
+import fs from "fs";
+import dotenv from "dotenv";
+import axios from "axios";
+
+dotenv.config();
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
@@ -43,18 +47,29 @@ app.post("/upload", upload.single('photoImg'), async (req, res) => {
     if (req.file) {
         const imagePath = path.join(__dirname, "uploads", req.file.filename);
 
-        const release = await asyncMutex.acquire(); // Acquire the mutex
+        // const release = await asyncMutex.acquire(); // Acquire the mutex
 
-        try {
-            const worker = await createWorker('eng');
-            const ret = await worker.recognize(imagePath);
-            console.log(ret.data.text);
+        const read = fs.readFileSync(imagePath);
 
-            res.render("index.ejs", { text: ret.data.text });
-            await worker.terminate();
-        } finally {
-            release(); // Release the mutex to allow the next request to proceed
-        }
+
+        axios.post("https://api.apilayer.com/image_to_text/upload", read, {
+            headers: {
+                'apikey': process.env.API_KEY,
+                'Content-Type': 'multipart/form-data',
+            },
+        })
+            .then(response => {
+                console.log(response.data);
+                res.render("index.ejs", { text:response.data.all_text });
+            })
+            .catch(error => {
+                console.error('Error:', error.response ? error.response.data : error.message);
+            });
+
+
+        // finally {
+        //     release(); // Release the mutex to allow the next request to proceed
+        // }
     }
 });
 
