@@ -8,6 +8,9 @@ import { Mutex } from 'async-mutex';
 import fs from "fs";
 import dotenv from "dotenv";
 import axios from "axios";
+import OpenAI from "openai";
+
+const openai = new OpenAI({ apiKey: `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` });
 
 dotenv.config();
 
@@ -50,9 +53,9 @@ app.post("/upload", upload.single('photoImg'), async (req, res) => {
         // const release = await asyncMutex.acquire(); // Acquire the mutex
 
         const read = fs.readFileSync(imagePath);
+let resp;
 
-
-        axios.post("https://api.apilayer.com/image_to_text/upload", read, {
+        await axios.post("https://api.apilayer.com/image_to_text/upload", read, {
             headers: {
                 'apikey': process.env.API_KEY,
                 'Content-Type': 'multipart/form-data',
@@ -60,11 +63,43 @@ app.post("/upload", upload.single('photoImg'), async (req, res) => {
         })
             .then(response => {
                 console.log(response.data);
-                res.render("index.ejs", { text:response.data.all_text });
+                resp = response.data.all_text;
+                // res.render("index.ejs", { text: response.data.all_text });
             })
             .catch(error => {
                 console.error('Error:', error.response ? error.response.data : error.message);
             });
+
+
+
+            //Request to open ai server
+
+        try {
+
+            async function main() {
+                const completion = await openai.chat.completions.create({
+                    messages: [
+                        {
+                            role: "system",
+                            content: "You are a helpful assistant designed to extract quality text",
+                        },
+                        { role: "user", content: `Make this text error free and exclude every odd thing which do not required to be in this text only give out put what needed as a summery if there is a long text , "${resp}"` },
+                    ],
+                    model: "gpt-3.5-turbo-1106",
+                })
+
+                console.log(completion.choices[0].message.content);
+                res.render("index.ejs", { text: completion.choices[0].message.content });
+            }
+
+            main();
+
+
+        } catch (error) {
+            console.log(error.message);
+        }
+
+
 
 
         // finally {

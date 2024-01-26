@@ -21,6 +21,47 @@
                 font-family: 'poppins', sans-serif;
             }
         }
+
+        #inputbox {
+            width: 95%;
+            height: 5rem;
+            border: solid 2px white;
+            border-radius: 1rem;
+            background-color: whitesmoke;
+            outline: none;
+
+        }
+
+        #inputbox:hover {
+            border-color: #4F46E5;
+        }
+
+        #chatBox {
+            display: flex;
+
+        }
+
+        #imgx {
+            width: 50px;
+            height: 50px;
+            align-self: center;
+            /* flex-shrink: 0;
+            flex-grow: 0; */
+            /* object-fit: cover; */
+            cursor: pointer;
+        }
+
+        #imgx:active {
+            width: 45px;
+            height: 45px;
+        }
+
+        #mssgbox {
+            width: 100%;
+            height: 4rem;
+
+
+        }
     </style>
 </head>
 
@@ -47,7 +88,7 @@
                     <br>
 
 
-                    <div style="border: solid 2px #4F46E5;border-radius: 0.5rem;">
+                    <div style="border: solid 2.5px #4F46E5;border-radius: 0.5rem;">
                         <div class="read flex justify-start">
                             <button
                                 class="rounded-md bg-indigo-600 px-2 py-1 text-sm font-semibold text-white shadow-sm  focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
@@ -61,58 +102,105 @@
                         <p class="mt-6 text-lg leading-8 text-gray-600" style="font-size: 1.4rem;margin-top: -0px;"
                             id="word">
                             <%= locals.text %>
+
                         </p>
                     </div>
 
                     <div class="mt-10 flex items-center justify-center gap-x-6">
-                        <a href="#"
+                        <a href=""
                             class="rounded-md bg-indigo-600 px-3.5 py-3.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">Regenerate
                             summery</a>
 
                     </div>
                 </div>
-            </div>
-            <div class="absolute inset-x-0 top-[calc(100%-13rem)] -z-10 transform-gpu overflow-hidden blur-3xl sm:top-[calc(100%-30rem)]"
-                aria-hidden="true">
-                <div class="relative left-[calc(50%+3rem)] aspect-[1155/678] w-[36.125rem] -translate-x-1/2 bg-gradient-to-tr from-[#ff80b5] to-[#9089fc] opacity-30 sm:left-[calc(50%+36rem)] sm:w-[72.1875rem]"
-                    style="clip-path: polygon(74.1% 44.1%, 100% 61.6%, 97.5% 26.9%, 85.5% 0.1%, 80.7% 2%, 72.5% 32.5%, 60.2% 62.4%, 52.4% 68.1%, 47.5% 58.3%, 45.2% 34.5%, 27.5% 76.7%, 0.1% 64.9%, 17.9% 100%, 27.6% 76.8%, 76.1% 97.7%, 74.1% 44.1%)">
+
+                <br>
+                <br>
+                <br>
+
+                <div id="mssgbox">
+
+                </div>
+                <br>
+                <br>
+
+                <div id="chatBox">
+
+                    <input type="text" id="inputbox" placeholder="  Ask anything about your summery ">
+                    <img src="https://img.icons8.com/ios-glyphs/60/4f46e5/send-letter.png" alt="send-letter" id="imgx"
+                        onclick="sendm()" />
+                </div>
+
+
+                <div class="absolute inset-x-0 top-[calc(100%-13rem)] -z-10 transform-gpu overflow-hidden blur-3xl sm:top-[calc(100%-30rem)]"
+                    aria-hidden="true">
+                    <div class="relative left-[calc(50%+3rem)] aspect-[1155/678] w-[36.125rem] -translate-x-1/2 bg-gradient-to-tr from-[#ff80b5] to-[#9089fc] opacity-30 sm:left-[calc(50%+36rem)] sm:w-[72.1875rem]"
+                        style="clip-path: polygon(74.1% 44.1%, 100% 61.6%, 97.5% 26.9%, 85.5% 0.1%, 80.7% 2%, 72.5% 32.5%, 60.2% 62.4%, 52.4% 68.1%, 47.5% 58.3%, 45.2% 34.5%, 27.5% 76.7%, 0.1% 64.9%, 17.9% 100%, 27.6% 76.8%, 76.1% 97.7%, 74.1% 44.1%)">
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
 
 
 
-    <script>
-        let c = 0;
-        let text = `<%= locals.text %>`;
+        <script>
+            let c = 0;
+            let text = `<%= locals.text %>`;
+
+
+            function sendm() {
+
+                let inputbox = document.querySelector("#inputbox").value;
+                let mssgbox = document.querySelector("#mssgbox");
+
+                let div = document.createElement("div");
+                div.style.backgroundColor = "#4F46E5";
+                div.style.color = "white";
+                div.style.border = "solid 2px #4F46E5";
+                div.style.borderRadius = "5px";
+                // div.style.display = "inline-block"
+                div.style.float = "right";
+                div.style.width = "7rem";
+                div.style.height = "4rem"
+                let p = document.createElement("p");
+                p.textContent = inputbox;
+                p.style.fontSize = "1.3rem";
+                div.appendChild(p);
+
+                let br = document.createElement("br");
+                mssgbox.appendChild(div);
+                // mssgbox.appendChild(br);
+                
 
 
 
-        document.querySelector("#ImgIcon").addEventListener("click", async () => {
-            if (c == 0) {
-                document.querySelector("#ImgIcon").setAttribute("src", "https://img.icons8.com/ios-glyphs/30/FFFFFF/pause--v1.png");
-                const speech = await new SpeechSynthesisUtterance(text);
-                speech.lang = "en-US";
-                window.speechSynthesis.speak(speech);
-                speech.onboundary = (event) => {
-                    const charIndex = event.charIndex;
-                    const charLength = event.charLength;
-                    const spokenWord = text.substring(charIndex, charIndex + charLength);
-                    const pTagContent = document.querySelector("p").textContent;
-                    const highlightedText = pTagContent.replace(spokenWord, `<span style="background-color: #4F46E5;color:white">${spokenWord}</span>`);
-                    document.querySelector("p").innerHTML = highlightedText;
-                };
-                c++;
-
-            } else {
-                document.querySelector("#ImgIcon").setAttribute("src", "https://img.icons8.com/ios-glyphs/30/FFFFFF/play--v1.png");
-                window.speechSynthesis.cancel();
-                c = 0;
             }
-        })
 
-    </script>
+
+            document.querySelector("#ImgIcon").addEventListener("click", async () => {
+                if (c == 0) {
+                    document.querySelector("#ImgIcon").setAttribute("src", "https://img.icons8.com/ios-glyphs/30/FFFFFF/pause--v1.png");
+                    const speech = await new SpeechSynthesisUtterance(text);
+                    speech.lang = "en-US";
+                    window.speechSynthesis.speak(speech);
+                    speech.onboundary = (event) => {
+                        const charIndex = event.charIndex;
+                        const charLength = event.charLength;
+                        const spokenWord = text.substring(charIndex, charIndex + charLength);
+                        const pTagContent = document.querySelector("p").textContent;
+                        const highlightedText = pTagContent.replace(spokenWord, `<span style="background-color: #4F46E5;color:white">${spokenWord}</span>`);
+                        document.querySelector("p").innerHTML = highlightedText;
+                    };
+                    c++;
+
+                } else {
+                    document.querySelector("#ImgIcon").setAttribute("src", "https://img.icons8.com/ios-glyphs/30/FFFFFF/play--v1.png");
+                    window.speechSynthesis.cancel();
+                    c = 0;
+                }
+            })
+
+        </script>
 
 
 </body>
