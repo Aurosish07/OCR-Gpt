@@ -80,9 +80,9 @@
 
     input[type="submit"] {
       font-size: 1.5rem;
-      background-color: deepskyblue;
+      background-color: #9a68c5;
       color: white;
-      border-color: deepskyblue;
+      border-color: #9a68c5;
 
       font-family: 'poppins', sans-serif;
       border-radius: 5px;
@@ -90,13 +90,35 @@
     }
 
     input[type="submit"]:hover {
-      background-color: rgb(32, 163, 215);
+      background-color: #8040b9;
+    }
+
+    h1 {
+      font-size: 3.5rem;
+    }
+
+    @media screen and (min-width:380px) and (max-width:500px) {
+      h1 {
+        font-size: 2.9rem;
+      }
+
+    }
+
+    @media screen and (max-width:379px) {
+      h1 {
+        font-size: 2.6rem;
+      }
+
     }
   </style>
+ 
 </head>
 
 <body>
-  <h1>Photo to chat-gpt summery</h1>
+
+  <h1 class="">Photo📸Gpt</h1>
+  <br>
+
 
   <!-- File Input for Image Upload -->
   <form action="/upload" method="post" enctype="multipart/form-data">
@@ -107,9 +129,10 @@
 
     <!-- Button to Capture Photo from Camera -->
     <label for="captureButton">Capture a Photo</label>
-    <input id="captureButton" type="file" accept="image/*" name="photoImg" capture></input>
-    
-  
+    <input id="captureButton" type="file" accept="image/*" name="photoImg" class="appearance-none border border-red-500"
+      capture></input>
+
+
 
 
     <!-- Display Output Text -->
@@ -123,6 +146,8 @@
     <input type="submit" value="Upload">
 
   </form>
+
+
 
   <script>
     document.addEventListener('DOMContentLoaded', () => {
