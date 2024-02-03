@@ -59,8 +59,6 @@
         #mssgbox {
             width: 100%;
             height: 4rem;
-
-
         }
     </style>
 </head>
@@ -146,9 +144,9 @@
         <script>
             let c = 0;
             let text = `<%= locals.text %>`;
+            let key = `<%=locals.key%>`;
 
-
-            function sendm() {
+            async function sendm() {
 
                 let inputbox = document.querySelector("#inputbox").value;
                 let mssgbox = document.querySelector("#mssgbox");
@@ -161,7 +159,8 @@
                 // div.style.display = "inline-block"
                 div.style.float = "right";
                 div.style.width = "7rem";
-                div.style.height = "4rem"
+                div.style.height = "4rem";
+                div.style.overflow = "auto";
                 let p = document.createElement("p");
                 p.textContent = inputbox;
                 p.style.fontSize = "1.3rem";
@@ -170,8 +169,45 @@
                 let br = document.createElement("br");
                 mssgbox.appendChild(div);
                 // mssgbox.appendChild(br);
-                
 
+
+                const response = await fetch('https://api.openai.com/v1/chat/completions', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${key}`,
+                    },
+                    body: JSON.stringify({
+                        model: "gpt-3.5-turbo-1106",
+                        messages: [
+                            { role: "system", content: "You are a helpful assistant." },
+                            { role: "user", content: inputbox },
+                        ],
+                    }),
+                });
+
+                const data = await response.json();
+                console.log(data.choices[0].message.content);
+
+
+                console.log(data);
+                let divai = document.createElement("div");
+                divai.style.backgroundColor = "#4F46E5";
+                divai.style.color = "white";
+                divai.style.border = "solid 2px #4F46E5";
+                divai.style.borderRadius = "5px";
+                // div.style.display = "inline-block"
+                divai.style.float = "left";
+                divai.style.width = "7rem";
+                divai.style.height = "4rem";
+                divai.style.overflow = "auto";
+                let pai = document.createElement("p");
+                pai.textContent = data.choices[0].message.content;
+                pai.style.fontSize = "1.3rem";
+                divai.appendChild(pai);
+
+                let brai = document.createElement("brai");
+                mssgbox.appendChild(divai);
 
 
             }

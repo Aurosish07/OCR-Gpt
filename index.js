@@ -89,7 +89,7 @@ let resp;
                 })
 
                 console.log(completion.choices[0].message.content);
-                res.render("index.ejs", { text: completion.choices[0].message.content });
+                res.render("index.ejs", { text: completion.choices[0].message.content , key :process.env.OPENAI_API_KEY});
             }
 
             main();
