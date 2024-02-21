@@ -125,7 +125,7 @@
 
                 <div id="chatBox">
 
-                    <input type="text" id="inputbox" placeholder="  Ask anything about your summery ">
+                    <input type="text" id="inputbox" placeholder="  Ask anything about your summery " on>
                     <img src="https://img.icons8.com/ios-glyphs/60/4f46e5/send-letter.png" alt="send-letter" id="imgx"
                         onclick="sendm()" />
                 </div>
@@ -147,11 +147,18 @@
             let text = `<%= locals.text %>`;
             let key = `<%=locals.key%>`;
 
+            document.getElementById('inputbox').addEventListener('keypress', function (e) {
+                if (e.key === 'Enter') {
+                   sendm();
+                }
+            });
+
             async function sendm() {
 
                 let inputbox = document.querySelector("#inputbox").value;
                 let main = document.querySelector("main");
                 let br = document.createElement("br");
+
 
                 // Create div elements
                 let div1 = document.createElement('div');
@@ -166,18 +173,19 @@
                 let p2 = document.createElement('p');
                 p2.className = 'text-sm';
                 p2.textContent = `${inputbox}`;
+                p2.style.fontSize = "1.2rem";
 
                 div5.appendChild(p2);
                 div4.appendChild(div5);
                 div1.appendChild(br);
                 div1.appendChild(div4);
                 main.appendChild(div1);
-                
-                
 
 
-                
-                
+                document.querySelector("#inputbox").value = " "
+
+
+
                 const response = await fetch('https://api.openai.com/v1/chat/completions', {
                     method: 'POST',
                     headers: {
@@ -188,7 +196,7 @@
                         model: "gpt-3.5-turbo-1106",
                         messages: [
                             { role: "system", content: "You are a helpful assistant." },
-                            { role: "user", content:`${text}` + inputbox },
+                            { role: "user", content: `${text}` + inputbox },
                         ],
                     }),
                 });
@@ -196,7 +204,7 @@
                 const data = await response.json();
                 console.log(data.choices[0].message.content);
 
-                
+
                 console.log(data);
                 let mainai = document.querySelector("main");
                 // Create div elements
@@ -208,17 +216,20 @@
 
                 let div3 = document.createElement('div');
                 div3.className = 'px-6 py-4 rounded-lg bg-gray-200 dark:bg-gray-800 text-white';
-                
+
                 let p1 = document.createElement('p');
-                p1.className = 'text-sm';
+                p1.className = 'text-lg';
                 p1.textContent = `${data.choices[0].message.content}`;
-                
+                p1.style.fontSize = "1.2rem";
+                p2.style.lineHeight = "1.7rem";
+
+
                 div3.appendChild(p1);
                 div2.appendChild(div3);
                 div1.appendChild(div2);
                 main.appendChild(div1);
-                
-                
+
+
             }
 
 

@@ -9,6 +9,7 @@ import fs from "fs";
 import dotenv from "dotenv";
 import axios from "axios";
 import OpenAI from "openai";
+import bodyParser from "body-parser";
 
 const openai = new OpenAI({ apiKey: `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` });
 
@@ -22,6 +23,7 @@ const port = 3000;
 app.set('view engine', 'ejs');
 app.use(express.static("public"));
 app.use(express.urlencoded({ extended: true }));
+app.use(bodyParser.urlencoded({ extended: 1 }));
 
 
 const asyncMutex = new Mutex(); // Create a mutex to synchronize access to shared resources
@@ -46,6 +48,21 @@ app.get("/", (req, res) => {
 
 app.post("/upload", upload.single('photoImg'), async (req, res) => {
     console.log(req.file);
+    console.log(req.body.btnradio);
+    // let textprompt = "Make this text error free and exclude every odd thing which do not required to be in this text only give out put what needed as a summery if there is a long text";
+    // let mathprompt = "This is a problem of math or any topic, so you have to solve it";
+    // let prompt;
+    // if (req.body.btnradio == 'Math') {
+
+    //     prompt = mathprompt;
+
+    // } else {
+
+    //     prompt = textprompt;
+
+    // }
+
+
 
     if (req.file) {
         const imagePath = path.join(__dirname, "uploads", req.file.filename);
@@ -53,7 +70,7 @@ app.post("/upload", upload.single('photoImg'), async (req, res) => {
         // const release = await asyncMutex.acquire(); // Acquire the mutex
 
         const read = fs.readFileSync(imagePath);
-let resp;
+        let resp;
 
         await axios.post("https://api.apilayer.com/image_to_text/upload", read, {
             headers: {
@@ -72,7 +89,7 @@ let resp;
 
 
 
-            //Request to open ai server
+        //Request to open ai server
 
         try {
 
@@ -81,7 +98,7 @@ let resp;
                     messages: [
                         {
                             role: "system",
-                            content: "You are a helpful assistant designed to extract quality text",
+                            content: "You are a helpful assistant designed to extract quality text and do further assist",
                         },
                         { role: "user", content: `Make this text error free and exclude every odd thing which do not required to be in this text only give out put what needed as a summery if there is a long text , "${resp}"` },
                     ],
@@ -89,7 +106,7 @@ let resp;
                 })
 
                 console.log(completion.choices[0].message.content);
-                res.render("index.ejs", { text: completion.choices[0].message.content , key :process.env.OPENAI_API_KEY});
+                res.render("index.ejs", { text: completion.choices[0].message.content, key: process.env.OPENAI_API_KEY });
             }
 
             main();

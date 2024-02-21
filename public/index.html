@@ -6,15 +6,21 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>PhotoGpt</title>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
   <style>
     body {
       text-align: center;
       margin: 3.1rem;
       font-family: 'poppins', sans-serif;
+      align-items: center;
+      display: flex;
+      flex-direction: column;
     }
 
     h1 {
       color: #333;
+      font-weight: bold;
     }
 
     #imageContainer {
@@ -111,18 +117,27 @@
 
     }
   </style>
- 
+
 </head>
 
 <body>
 
-  <h1 class="">Photo📸Gpt</h1>
-  <br>
+  <h1 class="">Summarize📸Gpt</h1>
+
+ 
+
 
 
   <!-- File Input for Image Upload -->
   <form action="/upload" method="post" enctype="multipart/form-data">
 
+
+
+
+
+    <br>
+    <br>
+    <br>
 
     <label for="imageInput">Choose a Image</label>
     <input type="file" id="imageInput" accept="image/*" name="photoImg">
@@ -142,6 +157,8 @@
 
     <br>
     <br>
+    <br>
+
 
     <input type="submit" value="Upload">
 
