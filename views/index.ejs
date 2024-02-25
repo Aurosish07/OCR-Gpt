@@ -81,7 +81,7 @@
                 </div>
                 <div class="text-center">
 
-                    <h1 class="text-4xl font-bold tracking-tight text-indigo-600 sm:text-6xl">Photo📸Gpt</h1>
+                    <h1 class="text-4xl font-bold tracking-tight text-indigo-600 sm:text-6xl">Summarize📸Gpt</h1>
                     <br>
                     <br>
                     <br>
@@ -106,7 +106,7 @@
                     </div>
 
                     <div class="mt-10 flex items-center justify-center gap-x-6">
-                        <a href=""
+                        <a href="javascript:location.reload()"
                             class="rounded-md bg-indigo-600 px-3.5 py-3.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">Regenerate
                             summery</a>
 
@@ -235,7 +235,7 @@
 
             document.querySelector("#ImgIcon").addEventListener("click", async () => {
                 if (c == 0) {
-                    document.querySelector("#ImgIcon").setAttribute("src", "https://img.icons8.com/ios-glyphs/30/FFFFFF/pause--v1.png");
+                    document.querySelector("#ImgIcon").setAttribute("src", "https://img.icons8.com/ios-filled/50/FFFFFF/stop.png");
                     const speech = await new SpeechSynthesisUtterance(text);
                     speech.lang = "en-US";
                     window.speechSynthesis.speak(speech);

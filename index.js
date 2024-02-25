@@ -11,9 +11,10 @@ import axios from "axios";
 import OpenAI from "openai";
 import bodyParser from "body-parser";
 
-const openai = new OpenAI({ apiKey: `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` });
-
 dotenv.config();
+
+const openai = new OpenAI({ apiKey: `${process.env.OPENAI_API_KEY}` });
+
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
@@ -103,6 +104,9 @@ app.post("/upload", upload.single('photoImg'), async (req, res) => {
                         { role: "user", content: `Make this text error free and exclude every odd thing which do not required to be in this text only give out put what needed as a summery if there is a long text , "${resp}"` },
                     ],
                     model: "gpt-3.5-turbo-1106",
+                    // header:{
+                    //     'authorization':`Bearer ${process.env.OPENAI_API_KEY}`,
+                    // },
                 })
 
                 console.log(completion.choices[0].message.content);
