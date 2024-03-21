@@ -116,6 +116,14 @@
       }
 
     }
+
+    .btn{
+      border: solid 2px #e9ecef;
+    }
+
+    .btn-group{
+      gap:4px;
+    }
   </style>
 
 </head>
@@ -124,7 +132,7 @@
 
   <h1 class="">OCR📸Gpt</h1>
 
- 
+
 
 
 
@@ -147,6 +155,23 @@
     <input id="captureButton" type="file" accept="image/*" name="photoImg" class="appearance-none border border-red-500"
       capture></input>
 
+    <br>
+    <br>
+    <br>
+
+    <div class="btn-group" role="group" aria-label="Basic example">
+
+      <input type="radio" class="btn-check" name="btnradio" id="btn1" autocomplete="off" value="text" checked>
+      <label class="btn btn-light" for="btn1">Extract Only</label>
+
+      <input type="radio" class="btn-check" name="btnradio" id="btn2" autocomplete="off" value="summary">
+      <label class="btn btn-light" for="btn2">Extract with 
+        <br>
+        summary</label>
+
+    </div>
+
+
 
 
 
@@ -164,7 +189,7 @@
 
   </form>
 
-
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 
   <script>
     document.addEventListener('DOMContentLoaded', () => {

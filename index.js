@@ -50,18 +50,18 @@ app.get("/", (req, res) => {
 app.post("/upload", upload.single('photoImg'), async (req, res) => {
     console.log(req.file);
     console.log(req.body.btnradio);
-    // let textprompt = "Make this text error free and exclude every odd thing which do not required to be in this text only give out put what needed as a summery if there is a long text";
-    // let mathprompt = "This is a problem of math or any topic, so you have to solve it";
-    // let prompt;
-    // if (req.body.btnradio == 'Math') {
+    let textprompt = "Make this text error free and exclude every odd thing which do not required to be in this text only give out put what needed as a summery if there is a long text";
+    let summaryprompt = "This is a ocr generated text plz extract it correctly and exactly like if there is any spelling mistake or grammer then just correct it and if something is not clear and not understoodable then give responce what the user is trying to express ";
+    let prompt;
+    if (req.body.btnradio == 'text') {
 
-    //     prompt = mathprompt;
+        prompt = textprompt;
 
-    // } else {
+    } else {
 
-    //     prompt = textprompt;
+        prompt = summaryprompt;
 
-    // }
+    }
 
 
 
@@ -101,7 +101,7 @@ app.post("/upload", upload.single('photoImg'), async (req, res) => {
                             role: "system",
                             content: "You are a helpful assistant designed to extract quality text and do further assist",
                         },
-                        { role: "user", content: `Make this text error free and exclude every odd thing which do not required to be in this text only give out put what needed as a summery if there is a long text , "${resp}"` },
+                        { role: "user", content: `${prompt} , "${resp}"` },
                     ],
                     model: "gpt-3.5-turbo-1106",
                     // header:{
