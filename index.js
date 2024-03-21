@@ -50,8 +50,8 @@ app.get("/", (req, res) => {
 app.post("/upload", upload.single('photoImg'), async (req, res) => {
     console.log(req.file);
     console.log(req.body.btnradio);
-    let textprompt = "Make this text error free and exclude every odd thing which do not required to be in this text only give out put what needed as a summery if there is a long text";
-    let summaryprompt = "This is a ocr generated text plz extract it correctly and exactly like if there is any spelling mistake or grammer then just correct it and if something is not clear and not understoodable then give responce what the user is trying to express ";
+    let textprompt = "Correct any errors and extract the text exactly as written. Ensure accuracy in spelling and grammar. If any inaccuracies are present, provide corrections based on the context.";
+    let summaryprompt = "This is an OCR-generated text. Please ensure accurate extraction and correct any errors in spelling or grammar. Provide a clear summary of the content, omitting irrelevant details. If anything is unclear, provide a clarification based on the context. ";
     let prompt;
     if (req.body.btnradio == 'text') {
 
