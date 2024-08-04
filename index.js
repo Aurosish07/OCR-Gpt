@@ -13,7 +13,9 @@ import bodyParser from "body-parser";
 
 dotenv.config();
 
-const openai = new OpenAI({ apiKey: `${process.env.OPENAI_API_KEY}` });
+let key;
+
+const openai = new OpenAI({ apiKey: `${key}` });
 
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
@@ -53,6 +55,8 @@ app.post("/upload", upload.single('photoImg'), async (req, res) => {
     let textprompt = "Correct any errors and extract the text exactly as written. Ensure accuracy in spelling and grammar. If any inaccuracies are present, provide corrections based on the context.";
     let summaryprompt = "This is an OCR-generated text. Please ensure accurate extraction and correct any errors in spelling or grammar. Provide a clear summary of the content, omitting irrelevant details. If anything is unclear, provide a clarification based on the context. ";
     let prompt;
+    key = req.body.api_key;
+    console.log(key)
     if (req.body.btnradio == 'text') {
 
         prompt = textprompt;
@@ -110,7 +114,7 @@ app.post("/upload", upload.single('photoImg'), async (req, res) => {
                 })
 
                 console.log(completion.choices[0].message.content);
-                res.render("index.ejs", { text: completion.choices[0].message.content, key: process.env.OPENAI_API_KEY });
+                res.render("index.ejs", { text: completion.choices[0].message.content, key: key });
             }
 
             main();

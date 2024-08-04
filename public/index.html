@@ -117,12 +117,19 @@
 
     }
 
-    .btn{
+    .btn {
       border: solid 2px #e9ecef;
     }
 
-    .btn-group{
-      gap:4px;
+    .btn-group {
+      gap: 4px;
+    }
+
+    #api_key input{
+      border:solid 2px gray;
+      width: 15rem;
+      border-radius: 4px;
+
     }
   </style>
 
@@ -165,10 +172,19 @@
       <label class="btn btn-light" for="btn1">Extract Only</label>
 
       <input type="radio" class="btn-check" name="btnradio" id="btn2" autocomplete="off" value="summary">
-      <label class="btn btn-light" for="btn2">Extract with 
+      <label class="btn btn-light" for="btn2">Extract with
         <br>
         summary</label>
 
+    </div>
+
+    <br>
+    <br>
+    <br>
+
+
+    <div id="api_key">
+      <input type="text" name="api_key" placeholder="Enter Your OpenAi api key">
     </div>
 
 
