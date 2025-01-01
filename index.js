@@ -29,7 +29,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(bodyParser.urlencoded({ extended: 1 }));
 
 
-const asyncMutex = new Mutex(); // Create a mutex to synchronize access to shared resources
+// const asyncMutex = new Mutex(); // Create a mutex to synchronize access to shared resources
 
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
